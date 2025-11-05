@@ -1,7 +1,7 @@
 import time
 # Needed for memoization and caching
 import functools
-import unittest
+import pytest
 # Needed for runtime accessibility of system code function calls
 #import inspect
 
@@ -80,19 +80,19 @@ def apply_lru_cache_to_methods(cls, maxsize=None, typed=False):
 # Apply the lru_cache decorator to class and all of its functions
 SystemTestCode = apply_lru_cache_to_methods(SystemTestCode)
 
-class TestExpensiveFunction(unittest.TestCase):
+class TestExpensiveFunction():
     # Called after every test
     def __del__(self) -> None:
         return
 
-    @unittest.skip("DISABLED")
+    #@unittest.skip("DISABLED")
     @timer
     def test_first_call(self):
         #print("Test test_first_call:")
         result = SystemTestCode.waste_some_time(500)
         print(f"Success! test_first_call finished with result: {result}")
 
-    @unittest.skip("DISABLED")
+    #@unittest.skip("DISABLED")
     @timer
     def test_cached_call(self):
         #print("Test test_cached_call:")
@@ -100,14 +100,14 @@ class TestExpensiveFunction(unittest.TestCase):
         result = SystemTestCode.waste_some_time(500)
         print(f"Success! test_cached_call finished with result: {result}")
 
-    @unittest.skip("DISABLED")
+    #@unittest.skip("DISABLED")
     @timer
     def test_different_argument(self):
         #print("Test test_different_argument:")
         result = SystemTestCode.waste_some_time(100)
         print(f"Success! test_different_argument finished with result: {result}")
 
-    @unittest.skip("DISABLED")
+    #@unittest.skip("DISABLED")
     @timer
     def test_recursion_1(self):
         print("Started test_recursion_1")
@@ -119,14 +119,14 @@ class TestExpensiveFunction(unittest.TestCase):
     Passing values lower than the cached value '5', will automagically return the correct value
     without running the recursion? Probably uses the inner trace calls and determines this
     '''
-    @unittest.skip("DISABLED")
+    #@unittest.skip("DISABLED")
     @timer
     def test_recursion_2(self):
         print("Started test_recursion_2")
         result = SystemTestCode.recursive_function(5)
         print(f"test_recursion_2 returns: {result}")
         
-    @unittest.skip("DISABLED")
+    #@unittest.skip("DISABLED")
     def test_pyshark(self):
         import pyshark
         bpf_filter = f'tcp and host 127.0.0.1 and port 49743' 
@@ -159,11 +159,3 @@ class TestExpensiveFunction(unittest.TestCase):
         #print(functions_list)
         #name.cache_clear()
         return
-
-
-def setup():
-    return
-
-if __name__ == '__main__':
-    setup()
-    unittest.main()
