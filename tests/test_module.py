@@ -85,14 +85,12 @@ class TestExpensiveFunction():
     def __del__(self) -> None:
         return
 
-    #@unittest.skip("DISABLED")
     @timer
     def test_first_call(self):
         #print("Test test_first_call:")
         result = SystemTestCode.waste_some_time(500)
         print(f"Success! test_first_call finished with result: {result}")
 
-    #@unittest.skip("DISABLED")
     @timer
     def test_cached_call(self):
         #print("Test test_cached_call:")
@@ -100,14 +98,12 @@ class TestExpensiveFunction():
         result = SystemTestCode.waste_some_time(500)
         print(f"Success! test_cached_call finished with result: {result}")
 
-    #@unittest.skip("DISABLED")
     @timer
     def test_different_argument(self):
         #print("Test test_different_argument:")
         result = SystemTestCode.waste_some_time(100)
         print(f"Success! test_different_argument finished with result: {result}")
 
-    #@unittest.skip("DISABLED")
     @timer
     def test_recursion_1(self):
         print("Started test_recursion_1")
@@ -119,14 +115,13 @@ class TestExpensiveFunction():
     Passing values lower than the cached value '5', will automagically return the correct value
     without running the recursion? Probably uses the inner trace calls and determines this
     '''
-    #@unittest.skip("DISABLED")
     @timer
     def test_recursion_2(self):
         print("Started test_recursion_2")
         result = SystemTestCode.recursive_function(5)
         print(f"test_recursion_2 returns: {result}")
         
-    #@unittest.skip("DISABLED")
+    @pytest.mark.skip(reason="This test is temporarily disabled due to an ongoing bug with TShark dependency.")
     def test_pyshark(self):
         import pyshark
         bpf_filter = f'tcp and host 127.0.0.1 and port 49743' 
