@@ -42,35 +42,42 @@ class TestSystems():
         try:
             conn_config = """
 # Example swanctl.conf for a basic site-to-site connection
-    connections {
-        ipsec_tunnel {
-            local_addrs = %any
-            remote_addrs = 127.0.0.1 # Remote gateway IP
-            local {
-                auth = psk
-                id = @my_local_id
-            }
-            remote {
-                auth = psk
-                id = @my_remote_id
-            }
-            children {
-                my_child {
-                    local_ts = 127.0.0.1/24 # Local subnet
-                    remote_ts = 127.0.0.1/24 # Remote subnet
-                    mode = tunnel
-                    dpd_action = restart
-                    updown = /usr/local/sbin/updown.sh # Optional script for routing
-                }
+connections {
+    ipsec_tunnel {
+        local_addrs = 127.0.0.1
+        remote_addrs = 127.0.0.1
+        # Local endpoint (loopback)
+        local {
+            auth = psk
+            id = loopback-client
+        }
+        # Remote endpoint (loopback)
+        remote {
+            auth = psk
+            id = loopback-server
+        }
+        # IKEv2 configuration
+        children {
+            loopback-child {
+                local_ts = 127.0.0.1/32
+                remote_ts = 127.0.0.1/32
+                mode = tunnel
+                dpd_action = clear
+                start_action = trap
             }
         }
     }
-    secrets {
-        ike-my_tunnel {
-            id = @my_local_id
-            secret = "your_shared_secret"
-        }
+}
+secrets {
+    ike-loopback-psk {
+        id = loopback-client
+        secret = "your_shared_secret"
     }
+    ike-loopback-psk-server {
+        id = loopback-server
+        secret = "your_shared_secret"
+    }
+}
 """
 
             # Add connection above to the ipsec configuration file
